@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sacred Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  /* ── DEEP MYSTICAL DARK BASE ── */
+  --bg:          #0A0812;
+  --bg2:         #110E1E;
+  --bg3:         #1A1530;
+
+  /* ── GLASS ── */
+  --glass:       rgba(255,255,255,0.04);
+  --glass-hover: rgba(255,255,255,0.07);
+  --glass-bdr:   rgba(255,255,255,0.10);
+  --glass-bdr2:  rgba(255,255,255,0.06);
+  --glass-shine: rgba(255,255,255,0.12);
+
+  /* ── TEXT — bright, high contrast, readable ── */
+  --text:        #F5F2FF;
+  --text2:       #D8D0F0;
+  --text3:       #A898C8;
+
+  /* ── GOLD accent — luxury ── */
+  --gold:        #D4A843;
+  --gold-lt:     #E8C878;
+  --gold-dim:    #8C6C28;
+  --gold-glow:   rgba(212,168,67,0.2);
+  --gold-pale:   rgba(212,168,67,0.08);
+
+  /* ── VIOLET accent ── */
+  --vio:         #9B7FE0;
+  --vio-lt:      #BEA8F0;
+  --vio-dim:     #5A4898;
+  --vio-glow:    rgba(155,127,224,0.2);
+  --vio-pale:    rgba(155,127,224,0.08);
+
+  /* ── ROSE accent ── */
+  --ros:         #D4788A;
+  --ros-lt:      #E8A8B8;
+  --ros-pale:    rgba(212,120,138,0.08);
+  --ros-glow:    rgba(212,120,138,0.2);
+
+  /* ── TEAL accent ── */
+  --tea:         #5AACB0;
+  --tea-pale:    rgba(90,172,176,0.08);
+
+  --radius:      20px;
+  --radius-sm:   12px;
+  --nav-h:       64px;
+}
+
+html,body{min-height:100%;background:#0A0812}
+body{
+  background:#0A0812;
+  color:#F5F2FF;
+  font-family:'DM Sans',sans-serif;
+  font-weight:400;
+  font-size:16.5px;
+  line-height:1.7;
+  letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+
+/* ── AMBIENT BACKGROUND ORBS ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(155,127,224,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(212,168,67,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 60% 30%, rgba(212,120,138,0.06) 0%, transparent 60%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* noise grain */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:0;
+  opacity:.6;
+}
+
+.main{position:relative;z-index:1}
+
+/* ═══ TOP NAV — glass pill ═══ */
+.topnav{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--nav-h);
+  background:rgba(10,8,18,0.96);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--glass-bdr2);
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  z-index:100;
+  gap:16px;
+}
+
+.nav-brand{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.2rem;font-weight:700;
+  color:var(--text);letter-spacing:.02em;
+  white-space:nowrap;flex-shrink:0;
+}
+.nav-brand em{font-style:italic;color:var(--gold)}
+
+.nav-tabs{
+  display:flex;align-items:center;
+  gap:4px;flex:1;justify-content:center;
+}
+
+.nav-tab{
+  display:flex;align-items:center;gap:7px;
+  padding:8px 18px;border:none;
+  background:none;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;
+  color:var(--text3);cursor:pointer;
+  border-radius:100px;
+  transition:background .35s cubic-bezier(.32,.72,0,1),color .35s cubic-bezier(.32,.72,0,1);
+  white-space:nowrap;letter-spacing:.01em;
+}
+.nav-tab:hover{
+  background:var(--glass-hover);
+  color:var(--text2);
+}
+.nav-tab.on{
+  background:linear-gradient(135deg,rgba(155,127,224,0.2),rgba(212,168,67,0.15));
+  color:var(--gold-lt);
+  border:1px solid rgba(212,168,67,0.2);
+}
+.nav-tab .ti{font-size:13px;opacity:.8}
+
+.nav-right{
+  display:flex;align-items:center;
+  gap:10px;flex-shrink:0;
+}
+
+.nav-streak{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 14px;border-radius:100px;
+  background:var(--gold-pale);
+  border:1px solid rgba(212,168,67,0.25);
+}
+.streak-n{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.1rem;font-style:normal;font-weight:700;
+  color:var(--gold-lt);line-height:1;
+}
+.streak-l{font-size:11px;font-weight:500;color:var(--text3)}
+
+.nav-export{
+  padding:8px 16px;border-radius:100px;
+  border:1px solid var(--glass-bdr);
+  background:var(--glass);
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;font-weight:500;
+  color:var(--text3);cursor:pointer;
+  transition:background .3s,color .3s,border-color .3s;
+  white-space:nowrap;
+}
+.nav-export:hover{
+  background:var(--glass-hover);
+  color:var(--text2);
+  border-color:var(--glass-bdr2);
+}
+
+/* ═══ MAIN ═══ */
+.main{padding-top:var(--nav-h);min-height:100vh;background:#0A0812}
+
+/* ═══ PAGES ═══ */
+.page{display:none;padding:40px 36px 100px;max-width:760px;margin:0 auto;background:#0A0812}
+.page.on{display:block}
+
+/* ═══ PAGE HEADER ═══ */
+.ph{margin-bottom:32px}
+.ph-eye{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:#F0C84A;font-weight:700;margin-bottom:12px;
+  background:rgba(212,168,67,0.15);
+  border:1px solid rgba(212,168,67,0.35);
+  padding:5px 14px;border-radius:100px;
+}
+.ph h1{
+  font-family:'Libre Baskerville',serif;
+  font-size:2.4rem;font-weight:700;
+  line-height:1.15;color:#FFFFFF;
+  letter-spacing:-.01em;
+  text-shadow:0 2px 20px rgba(155,127,224,0.3);
+}
+.ph h1 em{font-style:italic;color:#F0C84A}
+.ph p{
+  margin-top:10px;font-size:15.5px;
+  color:#E8E0FF;line-height:1.75;font-weight:500;text-shadow:none;
+}
+
+/* ═══ GLASS CARD SHELL (double bezel) ═══ */
+.card-shell{
+  background:rgba(255,255,255,0.025);
+  border:1px solid var(--glass-bdr);
+  border-radius:calc(var(--radius) + 3px);
+  padding:3px;
+  margin-bottom:16px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 8px 32px rgba(0,0,0,0.4),
+    0 2px 8px rgba(0,0,0,0.3);
+}
+.card-inner{
+  background:linear-gradient(145deg, rgba(26,21,48,0.95) 0%, rgba(16,13,32,0.98) 100%);
+  border-radius:var(--radius);
+  padding:24px 28px;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,0.06);
+}
+
+/* card variants */
+.card-shell.gold .card-inner{
+  background:linear-gradient(145deg, rgba(32,24,10,0.97) 0%, rgba(20,16,6,0.98) 100%);
+  box-shadow:inset 0 1px 1px rgba(212,168,67,0.08);
+}
+.card-shell.gold{border-color:rgba(212,168,67,0.2)}
+
+.card-shell.vio .card-inner{
+  background:linear-gradient(145deg, rgba(18,14,40,0.97) 0%, rgba(12,9,28,0.98) 100%);
+}
+.card-shell.vio{border-color:rgba(155,127,224,0.2)}
+
+.card-shell.ros .card-inner{
+  background:linear-gradient(145deg, rgba(28,14,18,0.97) 0%, rgba(18,9,12,0.98) 100%);
+}
+.card-shell.ros{border-color:rgba(212,120,138,0.2)}
+
+.card-shell.tea .card-inner{
+  background:linear-gradient(145deg, rgba(10,22,24,0.97) 0%, rgba(6,16,18,0.98) 100%);
+}
+.card-shell.tea{border-color:rgba(90,172,176,0.2)}
+
+/* Card label */
+.cl{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:600;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+  color:var(--vio-lt);
+}
+.cl::after{content:'';flex:1;height:1px;background:rgba(155,127,224,0.2)}
+.cl.g{color:var(--gold-lt)}.cl.g::after{background:rgba(212,168,67,0.2)}
+.cl.r{color:var(--ros-lt)}.cl.r::after{background:rgba(212,120,138,0.2)}
+.cl.t{color:var(--tea)}.cl.t::after{background:rgba(90,172,176,0.2)}
+
+/* ═══ INPUTS — readable on dark ═══ */
+.fta{
+  width:100%;border:none;background:transparent;
+  font-family:'Libre Baskerville',serif;
+  font-size:1.05rem;font-weight:400;
+  color:var(--text);
+  line-height:1.9;resize:none;outline:none;min-height:110px;
+  caret-color:var(--gold);
+}
+.fta::placeholder{color:var(--text3);font-style:italic;opacity:.7}
+
+.fi{
+  width:100%;border:none;
+  border-bottom:1px solid rgba(255,255,255,0.12);
+  background:transparent;padding:10px 0;
+  font-family:'Libre Baskerville',serif;
+  font-size:1rem;font-weight:400;
+  color:var(--text);outline:none;
+  transition:border-color .3s;
+  caret-color:var(--gold);
+}
+.fi::placeholder{color:var(--text3);font-style:italic;opacity:.65}
+.fi:focus{border-color:rgba(212,168,67,0.5)}
+
+.hint{font-size:13.5px;color:var(--text3);font-weight:400;margin-bottom:16px;line-height:1.65}
+
+/* Gratitude */
+.glist{display:flex;flex-direction:column;gap:14px}
+.grow{display:flex;align-items:center;gap:12px}
+.gnum{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.1rem;font-style:italic;font-weight:500;
+  color:var(--gold);min-width:22px;flex-shrink:0;
+}
+
+/* Monthly display */
+.mc-text{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.05rem;font-weight:400;font-style:normal;
+  color:var(--text);line-height:1.9;white-space:pre-line;
+}
+.mc-empty{
+  font-family:'Libre Baskerville',serif;font-size:1rem;
+  font-style:italic;color:var(--text3);font-weight:400;
+}
+
+/* Intentions grid */
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.icell{
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--glass-bdr2);
+  border-radius:var(--radius-sm);padding:16px 18px;
+}
+.icell-lbl{
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:9px;font-weight:600;
+}
+.ita{
+  width:100%;border:none;background:transparent;
+  font-family:'Libre Baskerville',serif;
+  font-size:1.05rem;font-weight:400;
+  color:var(--text);outline:none;resize:none;
+  min-height:60px;line-height:1.7;caret-color:var(--gold);
+}
+.ita::placeholder{color:var(--text3);opacity:.55;font-style:italic}
+
+/* Mood */
+.mood-row{display:flex;gap:8px;flex-wrap:wrap}
+.mood-btn{
+  padding:8px 16px;border-radius:100px;
+  border:1px solid var(--glass-bdr);
+  background:var(--glass);
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;
+  color:var(--text2);cursor:pointer;
+  transition:background .3s,color .3s,border-color .3s;
+}
+.mood-btn:hover,.mood-btn.on{
+  background:var(--ros-pale);
+  border-color:rgba(212,120,138,0.3);
+  color:var(--ros-lt);
+}
+
+/* Save button */
+.save-row{text-align:center;padding-top:12px}
+.btn-save{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:14px 40px;
+  background:linear-gradient(135deg,var(--gold-dim),var(--gold));
+  border:none;border-radius:100px;
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:600;
+  color:#0A0812;cursor:pointer;letter-spacing:.02em;
+  transition:all .4s cubic-bezier(.32,.72,0,1);
+  box-shadow:0 4px 24px var(--gold-glow), inset 0 1px 1px rgba(255,255,255,0.3);
+}
+.btn-save:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 36px var(--gold-glow), inset 0 1px 1px rgba(255,255,255,0.3);
+}
+.btn-save:active{transform:scale(.97)}
+
+/* Letter write */
+.letter-write{
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(212,120,138,0.2);
+  border-radius:calc(var(--radius) + 3px);
+  padding:3px;margin-bottom:16px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+.letter-write-inner{
+  background:linear-gradient(145deg,rgba(28,14,20,0.97),rgba(16,8,12,0.98));
+  border-radius:var(--radius);
+  padding:24px 28px;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,0.05);
+}
+.btn-letter{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:11px 28px;
+  background:linear-gradient(135deg,rgba(212,120,138,0.3),rgba(212,120,138,0.15));
+  border:1px solid rgba(212,120,138,0.35);
+  border-radius:100px;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;
+  color:var(--ros-lt);cursor:pointer;
+  transition:all .35s cubic-bezier(.32,.72,0,1);
+}
+.btn-letter:hover{
+  background:linear-gradient(135deg,rgba(212,120,138,0.45),rgba(212,120,138,0.25));
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px var(--ros-glow);
+}
+
+.sec-lbl{
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--text3);font-weight:600;margin:8px 0 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--glass-bdr2)}
+
+/* ═══ CALENDAR ═══ */
+.cal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-mth{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.2rem;font-style:italic;font-weight:400;
+  color:var(--text);
+}
+.cal-arrows{display:flex;gap:6px}
+.cal-arr{
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--glass-bdr);
+  background:var(--glass);cursor:pointer;
+  font-size:16px;color:var(--text2);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .25s,color .25s;
+}
+.cal-arr:hover{background:var(--gold-pale);border-color:rgba(212,168,67,0.3);color:var(--gold-lt)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dow{
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text3);text-align:center;padding:5px 0;font-weight:600;
+}
+.cal-day{
+  aspect-ratio:1;border-radius:8px;border:none;background:none;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;
+  color:var(--text3);position:relative;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .25s,color .25s;
+}
+.cal-day:hover{background:var(--vio-pale);color:var(--vio-lt)}
+.cal-day.today{
+  background:linear-gradient(135deg,var(--gold-dim),var(--gold));
+  color:#0A0812;font-weight:700;
+}
+.cal-day.has-entry::after{
+  content:'';position:absolute;bottom:2px;
+  left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;
+  background:var(--ros);
+}
+.cal-day.today.has-entry::after{background:rgba(10,8,18,.6)}
+.cal-day.empty{color:rgba(255,255,255,.1);pointer-events:none}
+
+/* ═══ JOURNAL ═══ */
+.j-search{
+  width:100%;padding:12px 20px;
+  border:1px solid var(--glass-bdr);
+  border-radius:100px;
+  background:var(--glass);
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;
+  color:var(--text);outline:none;
+  transition:border-color .25s,background .25s;
+  margin-bottom:16px;caret-color:var(--gold);
+}
+.j-search:focus{border-color:rgba(212,168,67,0.3);background:var(--glass-hover)}
+.j-search::placeholder{color:var(--text3);opacity:.65}
+.j-list{display:flex;flex-direction:column;gap:10px}
+
+.j-card{
+  background:rgba(255,255,255,0.025);
+  border:1px solid var(--glass-bdr2);
+  border-radius:var(--radius);
+  padding:18px 22px;cursor:pointer;position:relative;
+  transition:border-color .3s,background .3s,transform .3s;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+.j-card:hover{
+  border-color:rgba(212,168,67,0.25);
+  background:var(--glass-hover);
+  transform:translateY(-1px);
+}
+.j-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.j-date{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.j-mood-b{
+  font-size:11.5px;padding:3px 11px;border-radius:100px;
+  background:var(--ros-pale);color:var(--ros-lt);
+  border:1px solid rgba(212,120,138,0.2);font-weight:500;
+}
+.j-preview{
+  font-family:'Libre Baskerville',serif;
+  font-size:1rem;font-style:normal;font-weight:400;
+  color:var(--text2);line-height:1.6;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.j-chips{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.chip{
+  font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 10px;border-radius:100px;
+  background:var(--vio-pale);color:var(--vio-lt);
+  border:1px solid rgba(155,127,224,0.2);font-weight:500;
+}
+.j-del{
+  position:absolute;top:12px;right:12px;
+  width:24px;height:24px;border-radius:50%;
+  border:none;background:none;
+  color:var(--text3);opacity:0;cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .2s,color .2s,background .2s;
+}
+.j-card:hover .j-del{opacity:.5}
+.j-del:hover{opacity:1!important;color:var(--ros-lt);background:var(--ros-pale)}
+
+/* ═══ LETTERS ═══ */
+.letter-list{display:flex;flex-direction:column;gap:10px}
+.letter-card{
+  background:rgba(255,255,255,0.025);
+  border:1px solid var(--glass-bdr2);
+  border-radius:var(--radius);
+  padding:18px 22px;cursor:pointer;position:relative;
+  transition:border-color .3s,background .3s,transform .3s;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+.letter-card:hover{
+  border-color:rgba(212,120,138,0.3);
+  background:var(--glass-hover);transform:translateY(-1px);
+}
+.letter-date{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ros-lt);margin-bottom:6px;font-weight:600}
+.letter-preview{
+  font-family:'Libre Baskerville',serif;font-size:1.05rem;font-style:italic;font-weight:400;
+  color:var(--text2);line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.letter-del{
+  position:absolute;top:12px;right:12px;width:24px;height:24px;
+  border-radius:50%;border:none;background:none;
+  color:var(--text3);opacity:0;cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .2s,color .2s;
+}
+.letter-card:hover .letter-del{opacity:.5}
+.letter-del:hover{opacity:1!important;color:var(--ros-lt)}
+
+/* ═══ EMPTY ═══ */
+.empty{text-align:center;padding:56px 0}
+.empty-ic{font-size:2.2rem;opacity:.2;margin-bottom:12px}
+.empty-t{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.2rem;font-style:italic;font-weight:400;color:var(--text3);
+}
+
+/* ═══ BACK BTN ═══ */
+.back-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text3);background:none;border:none;
+  cursor:pointer;padding:0;margin-bottom:24px;
+  transition:color .25s;font-family:'DM Sans',sans-serif;font-weight:500;
+}
+.back-btn:hover{color:var(--gold-lt)}
+
+/* ═══ MODAL ═══ */
+.modal-bg{
+  position:fixed;inset:0;
+  background:rgba(5,4,12,.7);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  z-index:200;display:flex;align-items:center;justify-content:center;
+  padding:24px;opacity:0;pointer-events:none;
+  transition:opacity .4s cubic-bezier(.22,1,.36,1);
+}
+.modal-bg.on{opacity:1;pointer-events:all}
+.modal{
+  background:linear-gradient(145deg,rgba(26,21,48,.98),rgba(12,9,24,.99));
+  border:1px solid var(--glass-bdr);
+  border-radius:calc(var(--radius) + 4px);
+  max-width:580px;width:100%;max-height:85vh;overflow-y:auto;
+  padding:32px 36px;
+  box-shadow:0 32px 80px rgba(0,0,0,.6), inset 0 1px 1px rgba(255,255,255,.06);
+  transform:translateY(16px) scale(.97);
+  transition:transform .4s cubic-bezier(.22,1,.36,1);
+}
+.modal-bg.on .modal{transform:translateY(0) scale(1)}
+.modal-hdr{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:22px;padding-bottom:16px;
+  border-bottom:1px solid var(--glass-bdr2);
+}
+.modal-date{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ros-lt);margin-bottom:5px;font-weight:600}
+.modal-ttl{font-family:'Libre Baskerville',serif;font-size:1.35rem;font-style:italic;color:var(--text)}
+.modal-x{
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--glass-bdr);background:var(--glass);
+  cursor:pointer;color:var(--text3);font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .25s,color .25s;flex-shrink:0;
+}
+.modal-x:hover{background:var(--ros-pale);color:var(--ros-lt)}
+.modal-body{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.05rem;font-weight:400;
+  color:var(--text);line-height:1.95;white-space:pre-line;
+}
+
+/* ═══ TOAST ═══ */
+.toast{
+  position:fixed;bottom:32px;left:50%;
+  transform:translateX(-50%) translateY(14px);
+  background:linear-gradient(135deg,var(--gold-dim),var(--gold));
+  color:#0A0812;
+  padding:11px 28px;border-radius:100px;
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:700;opacity:0;
+  transition:opacity .35s,transform .35s;
+  pointer-events:none;z-index:500;white-space:nowrap;
+  box-shadow:0 4px 24px var(--gold-glow);
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* dv text */
+.dv-txt{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.05rem;font-weight:400;
+  color:var(--text);line-height:1.9;white-space:pre-line;
+}
+
+/* ═══ MOBILE ═══ */
+@media(max-width:680px){
+  html,body,.main{background:#0A0812 !important}
+  .page{background:#0A0812 !important}
+  .topnav{padding:0 14px;gap:6px;height:56px;--nav-h:56px}
+  .nav-brand{font-size:1.1rem}
+  .nav-tabs{gap:2px}
+  .nav-tab{padding:7px 10px;font-size:12px;gap:4px}
+  .nav-tab .ti{display:none}
+  .nav-streak{display:none}
+  .nav-export{padding:7px 12px;font-size:11px}
+  .page{padding:20px 16px 72px;max-width:100%}
+  .ph h1{font-size:2rem}
+  .card-inner{padding:18px 18px}
+  .letter-write-inner{padding:18px 18px}
+  .igrid{grid-template-columns:1fr}
+  .modal{padding:22px 18px;margin:0 8px}
+  .btn-save{padding:13px 32px;font-size:13px}
+}
+@media(max-width:400px){
+  .nav-export{display:none}
+  .nav-tab{padding:6px 8px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <div class="nav-brand">Sacred <em>Journal</em></div>
+  <div class="nav-tabs">
+    <button class="nav-tab on" id="nb-monthly" onclick="go('monthly')"><span class="ti">◎</span> Monthly</button>
+    <button class="nav-tab" id="nb-daily"   onclick="go('daily')">  <span class="ti">☀</span> Daily</button>
+    <button class="nav-tab" id="nb-future"  onclick="go('future')"> <span class="ti">✉</span> Letters</button>
+    <button class="nav-tab" id="nb-journal" onclick="go('journal')"><span class="ti">⊞</span> Journal</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-streak">
+      <span class="streak-n" id="streakN">0</span>
+      <span class="streak-l">streak ✦</span>
+    </div>
+    <button class="nav-export" onclick="exportData()">Export ↓</button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ══ MONTHLY ══ -->
+  <div class="page on" id="pg-monthly">
+    <div class="ph">
+      <div class="ph-eye">◎ Monthly Practice</div>
+      <h1>Your <em>Monthly Anchors</em></h1>
+      <p>Write your manifestations and affirmations once. They appear at the top of every daily entry — your morning and evening anchor.</p>
+    </div>
+
+    <div class="card-shell gold">
+      <div class="card-inner">
+        <div class="cl g">✦ Monthly Manifestations</div>
+        <p class="hint">Write what you are calling in this month. Vivid, present tense, already happened.</p>
+        <textarea class="fta" id="mManifest" rows="8"
+          placeholder="I am so happy and grateful now that...&#10;&#10;My life this month is filled with...&#10;&#10;I have attracted..."></textarea>
+      </div>
+    </div>
+
+    <div class="card-shell vio">
+      <div class="card-inner">
+        <div class="cl">𖠆 Monthly Affirmations</div>
+        <p class="hint">5–10 affirmations for who you are becoming. Read these aloud every morning and evening.</p>
+        <textarea class="fta" id="mAffirm" rows="8"
+          placeholder="I am confident and magnetic.&#10;I attract abundance effortlessly.&#10;I am deeply loved and supported.&#10;My body is strong and vital.&#10;I trust the timing of my life."></textarea>
+      </div>
+    </div>
+
+    <div class="save-row">
+      <button class="btn-save" onclick="saveMonthly()">Save Monthly Practice ✦</button>
+    </div>
+  </div>
+
+  <!-- ══ DAILY ══ -->
+  <div class="page" id="pg-daily">
+    <div class="ph">
+      <div class="ph-eye">☀ Daily Entry</div>
+      <h1>Today's <em>Practice</em></h1>
+      <p>Your monthly anchors sit at the top. Work through your gratitude, intentions and reflection.</p>
+    </div>
+
+    <div class="card-shell gold">
+      <div class="card-inner">
+        <div class="cl g">✦ This Month's Manifestations — Read &amp; Feel</div>
+        <div id="dManifest"><span class="mc-empty">No monthly manifestations yet — go to Monthly to set them.</span></div>
+      </div>
+    </div>
+
+    <div class="card-shell vio">
+      <div class="card-inner">
+        <div class="cl">𖠆 This Month's Affirmations — Read Aloud</div>
+        <div id="dAffirm"><span class="mc-empty">No monthly affirmations yet — go to Monthly to set them.</span></div>
+      </div>
+    </div>
+
+    <div style="height:8px"></div>
+
+    <div class="card-shell ros">
+      <div class="card-inner">
+        <div class="cl r">✦ Gratitude Exercise — 3 Good Things Today</div>
+        <div class="glist">
+          <div class="grow"><span class="gnum">I.</span>  <input class="fi" id="g1" type="text" placeholder="Something good that happened today..."></div>
+          <div class="grow"><span class="gnum">II.</span> <input class="fi" id="g2" type="text" placeholder="Something I appreciated today..."></div>
+          <div class="grow"><span class="gnum">III.</span><input class="fi" id="g3" type="text" placeholder="Someone or something I am grateful for..."></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-shell">
+      <div class="card-inner">
+        <div class="cl">Why I Am Grateful Right Now</div>
+        <textarea class="fta" id="gratNotes" rows="4"
+          placeholder="Go deeper... what feelings arise? What shifted today?"></textarea>
+      </div>
+    </div>
+
+    <div class="card-shell vio">
+      <div class="card-inner">
+        <div class="cl">Good Things Log — What Happened Today</div>
+        <textarea class="fta" id="goodLog" rows="5"
+          placeholder="Log the wins, moments of beauty, synchronicities, breakthroughs, kind gestures... anything good that crossed your path today."></textarea>
+      </div>
+    </div>
+
+    <div class="card-shell">
+      <div class="card-inner">
+        <div class="cl g">Today's Intentions</div>
+        <div class="igrid">
+          <div class="icell"><div class="icell-lbl">♡ Love &amp; Relationships</div><textarea class="ita" id="intLove"    placeholder="I intend to..."></textarea></div>
+          <div class="icell"><div class="icell-lbl">✦ Abundance</div>              <textarea class="ita" id="intAbund"   placeholder="I am calling in..."></textarea></div>
+          <div class="icell"><div class="icell-lbl">◯ Health &amp; Body</div>       <textarea class="ita" id="intHealth"  placeholder="My body is..."></textarea></div>
+          <div class="icell"><div class="icell-lbl">△ Purpose &amp; Growth</div>    <textarea class="ita" id="intPurpose" placeholder="I am here to..."></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-shell tea">
+      <div class="card-inner">
+        <div class="cl t">Evening Reflection</div>
+        <textarea class="fta" id="eveReflect" rows="5"
+          placeholder="How did today unfold? What did I learn? What am I releasing before sleep?"></textarea>
+      </div>
+    </div>
+
+    <div class="card-shell">
+      <div class="card-inner">
+        <div class="cl r">How Do I Feel Today?</div>
+        <div class="mood-row" id="moodRow">
+          <button class="mood-btn" onclick="pickMood(this)">🌸 Grateful</button>
+          <button class="mood-btn" onclick="pickMood(this)">✨ Energised</button>
+          <button class="mood-btn" onclick="pickMood(this)">🌿 Peaceful</button>
+          <button class="mood-btn" onclick="pickMood(this)">🔥 Motivated</button>
+          <button class="mood-btn" onclick="pickMood(this)">☁ Unsettled</button>
+          <button class="mood-btn" onclick="pickMood(this)">💫 Hopeful</button>
+          <button class="mood-btn" onclick="pickMood(this)">🌙 Reflective</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="save-row">
+      <button class="btn-save" onclick="saveDaily()">Save Today's Entry ✦</button>
+    </div>
+  </div>
+
+  <!-- ══ FUTURE SELF ══ -->
+  <div class="page" id="pg-future">
+    <div class="ph">
+      <div class="ph-eye">✉ Future Self</div>
+      <h1>Letters to <em>Her / Him</em></h1>
+      <p>Write to the version of you who has already arrived. Add a new letter any time. Come back and read them whenever you need them.</p>
+    </div>
+
+    <div class="letter-write">
+      <div class="letter-write-inner">
+        <div class="cl r">Write a New Letter</div>
+        <p style="font-family:'Libre Baskerville',serif;font-style:italic;font-size:1.1rem;color:var(--text3);margin-bottom:16px;font-weight:400">Dear Future Me,</p>
+        <textarea class="fta" id="newLetter" rows="10"
+          placeholder="By the time you read this, everything has fallen beautifully into place...&#10;&#10;I want you to know that right now, in this moment, I already believe in you with everything I have..."></textarea>
+        <div style="margin-top:18px;text-align:right">
+          <button class="btn-letter" onclick="saveLetter()">Save Letter ✦</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px">
+      <div class="sec-lbl">Past Letters</div>
+      <div class="letter-list" id="letterList">
+        <div class="empty"><div class="empty-ic">✉</div><div class="empty-t">Your letters will appear here...</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ JOURNAL ══ -->
+  <div class="page" id="pg-journal">
+    <div class="ph">
+      <div class="ph-eye">⊞ Journal</div>
+      <h1>Your <em>Journey</em></h1>
+      <p>Browse all saved entries by calendar or list. Dates with a rose dot have entries — tap to read in full.</p>
+    </div>
+
+    <div class="card-shell">
+      <div class="card-inner">
+        <div class="cl g">Calendar</div>
+        <div class="cal-hdr">
+          <div class="cal-mth" id="calMth"></div>
+          <div class="cal-arrows">
+            <button class="cal-arr" onclick="calMove(-1)">‹</button>
+            <button class="cal-arr" onclick="calMove(1)">›</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+    </div>
+
+    <input class="j-search" id="jSearch" placeholder="Search entries..." oninput="filterJ()">
+    <div class="j-list" id="jList"></div>
+  </div>
+
+  <!-- ══ DAY VIEW ══ -->
+  <div class="page" id="pg-dayview">
+    <button class="back-btn" onclick="go('journal')">← Back to Journal</button>
+    <div id="dayContent"></div>
+  </div>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div>
+        <div class="modal-date" id="modalDate"></div>
+        <div class="modal-ttl">Dear Future Me,</div>
+      </div>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var NOW     = new Date();
+var entries = JSON.parse(localStorage.getItem('sj8-entries') || '[]');
+var monthly = JSON.parse(localStorage.getItem('sj8-monthly') || '{"manifest":"","affirm":""}');
+var letters = JSON.parse(localStorage.getItem('sj8-letters') || '[]');
+var calY = NOW.getFullYear(), calM = NOW.getMonth();
+
+refreshMonthlyCards();
+calcStreak();
+renderLetters();
+go('monthly');
+
+var TITLES = {monthly:'Monthly Practice',daily:'Daily Entry',future:'Letters to Her / Him',journal:'Journal',dayview:'Entry Detail'};
+
+function go(name){
+  var ps=document.querySelectorAll('.page');
+  for(var i=0;i<ps.length;i++) ps[i].style.display='none';
+  var pg=document.getElementById('pg-'+name);
+  if(pg) pg.style.display='block';
+  var nbs=document.querySelectorAll('.nav-tab');
+  for(var j=0;j<nbs.length;j++) nbs[j].classList.remove('on');
+  var nb=document.getElementById('nb-'+name);
+  if(nb) nb.classList.add('on');
+  if(name==='journal'){renderCal();renderJournal(entries);}
+  if(name==='daily')  refreshMonthlyCards();
+  window.scrollTo(0,0);
+}
+
+function saveMonthly(){
+  monthly={manifest:val('mManifest'),affirm:val('mAffirm')};
+  localStorage.setItem('sj8-monthly',JSON.stringify(monthly));
+  refreshMonthlyCards();
+  toast('Monthly practice saved ✦');
+}
+
+function refreshMonthlyCards(){
+  var dm=document.getElementById('dManifest');
+  var da=document.getElementById('dAffirm');
+  var mm=document.getElementById('mManifest');
+  var ma=document.getElementById('mAffirm');
+  if(mm) mm.value=monthly.manifest;
+  if(ma) ma.value=monthly.affirm;
+  if(dm) dm.innerHTML=monthly.manifest
+    ?'<div class="mc-text">'+esc(monthly.manifest)+'</div>'
+    :'<span class="mc-empty">No monthly manifestations yet — go to Monthly to set them.</span>';
+  if(da) da.innerHTML=monthly.affirm
+    ?'<div class="mc-text">'+esc(monthly.affirm)+'</div>'
+    :'<span class="mc-empty">No monthly affirmations yet — go to Monthly to set them.</span>';
+}
+
+function pickMood(el){
+  var bs=document.querySelectorAll('#moodRow .mood-btn');
+  for(var i=0;i<bs.length;i++) bs[i].classList.remove('on');
+  el.classList.add('on');
+}
+function activeMood(){
+  var el=document.querySelector('#moodRow .mood-btn.on');
+  return el?el.textContent.trim():'';
+}
+
+function saveDaily(){
+  var iso=toISO(NOW);
+  var e={
+    id:Date.now(),
+    date:NOW.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),
+    dateShort:NOW.toLocaleDateString('en-GB'),
+    dateISO:iso,
+    mood:activeMood(),
+    grat:[val('g1'),val('g2'),val('g3')].filter(Boolean),
+    gratNotes:val('gratNotes'),
+    goodLog:val('goodLog'),
+    intentions:{love:val('intLove'),abundance:val('intAbund'),health:val('intHealth'),purpose:val('intPurpose')},
+    reflect:val('eveReflect'),
+    snap:{manifest:monthly.manifest,affirm:monthly.affirm}
+  };
+  entries=entries.filter(function(x){return x.dateISO!==iso;});
+  entries.unshift(e);
+  localStorage.setItem('sj8-entries',JSON.stringify(entries));
+  calcStreak();
+  toast('Daily entry saved ☀');
+}
+
+function saveLetter(){
+  var text=val('newLetter');
+  if(!text.trim()){toast('Write something first ✦');return;}
+  letters.unshift({id:Date.now(),date:NOW.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}),text:text});
+  localStorage.setItem('sj8-letters',JSON.stringify(letters));
+  document.getElementById('newLetter').value='';
+  renderLetters();
+  toast('Letter saved ✉');
+}
+
+function renderLetters(){
+  var el=document.getElementById('letterList');
+  if(!el)return;
+  if(!letters.length){
+    el.innerHTML='<div class="empty"><div class="empty-ic">✉</div><div class="empty-t">Your letters will appear here...</div></div>';
+    return;
+  }
+  el.innerHTML=letters.map(function(l){
+    return '<div class="letter-card" onclick="openLetter('+l.id+')">'+
+      '<button class="letter-del" onclick="event.stopPropagation();delLetter('+l.id+')">✕</button>'+
+      '<div class="letter-date">'+l.date+'</div>'+
+      '<div class="letter-preview">'+esc(l.text)+'</div></div>';
+  }).join('');
+}
+
+function openLetter(id){
+  var l=null;
+  for(var i=0;i<letters.length;i++){if(letters[i].id===id){l=letters[i];break;}}
+  if(!l)return;
+  document.getElementById('modalDate').textContent=l.date;
+  document.getElementById('modalBody').innerHTML=esc(l.text);
+  document.getElementById('modalBg').classList.add('on');
+}
+function closeModal(){document.getElementById('modalBg').classList.remove('on');}
+function delLetter(id){
+  if(!confirm('Delete this letter?'))return;
+  letters=letters.filter(function(x){return x.id!==id;});
+  localStorage.setItem('sj8-letters',JSON.stringify(letters));
+  renderLetters();toast('Letter removed');
+}
+
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function renderCal(){
+  document.getElementById('calMth').textContent=MONTHS[calM]+' '+calY;
+  var ed={};
+  for(var i=0;i<entries.length;i++) ed[entries[i].dateISO]=true;
+  var today=toISO(NOW);
+  var html='';
+  var dows=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  for(var d=0;d<7;d++) html+='<div class="cal-dow">'+dows[d]+'</div>';
+  var first=new Date(calY,calM,1);
+  var sd=first.getDay();if(sd===0)sd=7;
+  for(var e=1;e<sd;e++) html+='<div class="cal-day empty"></div>';
+  var days=new Date(calY,calM+1,0).getDate();
+  for(var n=1;n<=days;n++){
+    var iso=calY+'-'+pad(calM+1)+'-'+pad(n);
+    var cls='cal-day';
+    if(iso===today) cls+=' today';
+    if(ed[iso])     cls+=' has-entry';
+    html+='<button class="'+cls+'" onclick="openDay(\''+iso+'\')">'+n+'</button>';
+  }
+  document.getElementById('calGrid').innerHTML=html;
+}
+function calMove(dir){
+  calM+=dir;
+  if(calM>11){calM=0;calY++;}
+  if(calM<0) {calM=11;calY--;}
+  renderCal();
+}
+
+function openDay(iso){
+  var de=entries.filter(function(x){return x.dateISO===iso;});
+  var content=document.getElementById('dayContent');
+  if(!de.length){
+    content.innerHTML=
+      '<div class="ph"><div class="ph-eye">☀ '+iso+'</div><h1>No entry <em>yet</em></h1><p>Nothing saved for this date.</p></div>'+
+      '<div class="empty"><div class="empty-ic">🌙</div><div class="empty-t">Nothing saved for this day</div></div>';
+  } else {
+    var e=de[0];
+    var ints=e.intentions||{};
+    var ic=
+      (ints.love      ?'<div class="icell"><div class="icell-lbl">♡ Love</div><p class="dv-txt">'+esc(ints.love)+'</p></div>':'')+
+      (ints.abundance ?'<div class="icell"><div class="icell-lbl">✦ Abundance</div><p class="dv-txt">'+esc(ints.abundance)+'</p></div>':'')+
+      (ints.health    ?'<div class="icell"><div class="icell-lbl">◯ Health</div><p class="dv-txt">'+esc(ints.health)+'</p></div>':'')+
+      (ints.purpose   ?'<div class="icell"><div class="icell-lbl">△ Purpose</div><p class="dv-txt">'+esc(ints.purpose)+'</p></div>':'');
+    content.innerHTML=
+      '<div class="ph"><div class="ph-eye">☀ '+e.date+'</div><h1>'+e.date.split(',')[0]+' <em>Entry</em></h1>'+(e.mood?'<p>'+e.mood+'</p>':'')+'</div>'+
+      (e.snap&&e.snap.manifest?'<div class="card-shell gold"><div class="card-inner"><div class="cl g">✦ Monthly Manifestations</div><div class="mc-text">'+esc(e.snap.manifest)+'</div></div></div>':'')+
+      (e.snap&&e.snap.affirm  ?'<div class="card-shell vio"><div class="card-inner"><div class="cl">𖠆 Monthly Affirmations</div><div class="mc-text">'+esc(e.snap.affirm)+'</div></div></div>':'')+
+      (e.grat&&e.grat.length  ?'<div class="card-shell ros"><div class="card-inner"><div class="cl r">✦ 3 Good Things</div><div class="glist">'+
+        e.grat.map(function(g,i){return '<div class="grow"><span class="gnum">'+['I.','II.','III.'][i]+'</span><span class="dv-txt">'+esc(g)+'</span></div>';}).join('')+'</div></div></div>':'')+
+      (e.gratNotes?'<div class="card-shell"><div class="card-inner"><div class="cl">Why Grateful</div><p class="dv-txt">'+esc(e.gratNotes)+'</p></div></div>':'')+
+      (e.goodLog  ?'<div class="card-shell vio"><div class="card-inner"><div class="cl">Good Things Log</div><p class="dv-txt">'+esc(e.goodLog)+'</p></div></div>':'')+
+      (ic         ?'<div class="card-shell"><div class="card-inner"><div class="cl g">Intentions</div><div class="igrid">'+ic+'</div></div></div>':'')+
+      (e.reflect  ?'<div class="card-shell tea"><div class="card-inner"><div class="cl t">Evening Reflection</div><p class="dv-txt">'+esc(e.reflect)+'</p></div></div>':'');
+  }
+  go('dayview');
+}
+
+function renderJournal(list){
+  var el=document.getElementById('jList');
+  if(!list.length){
+    el.innerHTML='<div class="empty"><div class="empty-ic">🌙</div><div class="empty-t">No entries yet — begin your practice</div></div>';
+    return;
+  }
+  el.innerHTML=list.map(function(e){
+    var preview=e.goodLog||(e.grat&&e.grat[0])||e.gratNotes||e.reflect||'—';
+    var chips=[];
+    if(e.mood) chips.push(e.mood);
+    if(e.grat&&e.grat.length) chips.push('Gratitude');
+    if(e.goodLog) chips.push('Good things');
+    if(e.reflect) chips.push('Reflection');
+    return '<div class="j-card" onclick="openDay(\''+e.dateISO+'\')">'+
+      '<button class="j-del" onclick="event.stopPropagation();delEntry('+e.id+')">✕</button>'+
+      '<div class="j-top"><div class="j-date">'+e.date+'</div>'+(e.mood?'<div class="j-mood-b">'+e.mood+'</div>':'')+
+      '</div><div class="j-preview">'+esc(preview)+'</div>'+
+      (chips.length?'<div class="j-chips">'+chips.map(function(c){return '<span class="chip">'+c+'</span>';}).join('')+'</div>':'')+
+      '</div>';
+  }).join('');
+}
+
+function filterJ(){
+  var q=document.getElementById('jSearch').value.toLowerCase();
+  renderJournal(q?entries.filter(function(e){return JSON.stringify(e).toLowerCase().indexOf(q)>-1;}):entries);
+}
+
+function delEntry(id){
+  if(!confirm('Delete this entry?'))return;
+  entries=entries.filter(function(x){return x.id!==id;});
+  localStorage.setItem('sj8-entries',JSON.stringify(entries));
+  renderJournal(entries);renderCal();calcStreak();
+  toast('Entry removed');
+}
+
+function calcStreak(){
+  var dates={};
+  for(var i=0;i<entries.length;i++) dates[entries[i].dateISO]=true;
+  var streak=0,check=new Date(NOW);
+  for(var d=0;d<365;d++){
+    var iso=toISO(check);
+    if(dates[iso]){streak++;check.setDate(check.getDate()-1);}
+    else if(d===0){check.setDate(check.getDate()-1);}
+    else break;
+  }
+  document.getElementById('streakN').textContent=streak;
+}
+
+function exportData(){
+  showExportModal();
+}
+
+function showExportModal(){
+  document.getElementById('exportModal').classList.add('on');
+}
+
+function closeExportModal(){
+  document.getElementById('exportModal').classList.remove('on');
+}
+
+function exportJSON(){
+  var data={exportedAt:new Date().toISOString(),entries:entries,monthly:monthly,letters:letters};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='sacred-journal-'+toISO(NOW)+'.json';
+  a.click();URL.revokeObjectURL(url);
+  closeExportModal();
+  toast('JSON backup saved ↓');
+}
+
+function exportReport(){
+  closeExportModal();
+  var MONTHS_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var today=NOW.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  // Build entries HTML
+  var entriesHTML='';
+  if(entries.length){
+    entriesHTML=entries.map(function(e){
+      var ints=e.intentions||{};
+      var intRows=[
+        ints.love      ?'<div class="r-intent-cell"><div class="r-intent-lbl">♡ Love</div><p>'+rEsc(ints.love)+'</p></div>':'',
+        ints.abundance ?'<div class="r-intent-cell"><div class="r-intent-lbl">✦ Abundance</div><p>'+rEsc(ints.abundance)+'</p></div>':'',
+        ints.health    ?'<div class="r-intent-cell"><div class="r-intent-lbl">◯ Health</div><p>'+rEsc(ints.health)+'</p></div>':'',
+        ints.purpose   ?'<div class="r-intent-cell"><div class="r-intent-lbl">△ Purpose</div><p>'+rEsc(ints.purpose)+'</p></div>':'',
+      ].filter(Boolean).join('');
+
+      var gratRows=(e.grat||[]).map(function(g,i){
+        return '<div class="r-grat-row"><span class="r-grat-num">'+['I.','II.','III.'][i]+'</span><span>'+rEsc(g)+'</span></div>';
+      }).join('');
+
+      return '<div class="r-entry">'+
+        '<div class="r-entry-date">'+e.date+(e.mood?' &nbsp;·&nbsp; '+e.mood:'')+'</div>'+
+        (e.snap&&e.snap.manifest?'<div class="r-section"><div class="r-section-lbl">✦ Monthly Manifestations</div><p class="r-body">'+rEsc(e.snap.manifest)+'</p></div>':'')+
+        (e.snap&&e.snap.affirm  ?'<div class="r-section"><div class="r-section-lbl">𖠆 Monthly Affirmations</div><p class="r-body">'+rEsc(e.snap.affirm)+'</p></div>':'')+
+        (gratRows?'<div class="r-section"><div class="r-section-lbl">✦ 3 Good Things</div>'+gratRows+'</div>':'')+
+        (e.gratNotes?'<div class="r-section"><div class="r-section-lbl">Why Grateful</div><p class="r-body">'+rEsc(e.gratNotes)+'</p></div>':'')+
+        (e.goodLog  ?'<div class="r-section"><div class="r-section-lbl">Good Things Log</div><p class="r-body">'+rEsc(e.goodLog)+'</p></div>':'')+
+        (intRows    ?'<div class="r-section"><div class="r-section-lbl">Today's Intentions</div><div class="r-intent-grid">'+intRows+'</div></div>':'')+
+        (e.reflect  ?'<div class="r-section"><div class="r-section-lbl">Evening Reflection</div><p class="r-body">'+rEsc(e.reflect)+'</p></div>':'')+
+        '</div>';
+    }).join('');
+  } else {
+    entriesHTML='<p style="color:#888;font-style:italic">No daily entries saved yet.</p>';
+  }
+
+  var lettersHTML='';
+  if(letters.length){
+    lettersHTML=letters.map(function(l){
+      return '<div class="r-letter">'+
+        '<div class="r-letter-date">'+l.date+'</div>'+
+        '<p class="r-letter-salutation">Dear Future Me,</p>'+
+        '<p class="r-body">'+rEsc(l.text)+'</p>'+
+        '</div>';
+    }).join('');
+  } else {
+    lettersHTML='<p style="color:#888;font-style:italic">No letters saved yet.</p>';
+  }
+
+  var html='<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'+
+    '<meta name="viewport" content="width=device-width,initial-scale=1.0">'+
+    '<title>Sacred Journal — Report</title>'+
+    '<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">'+
+    '<style>'+
+    '*{margin:0;padding:0;box-sizing:border-box}'+
+    'body{background:#FAF8F5;color:#1A1528;font-family:"DM Sans",sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}'+
+    '.r-wrap{max-width:720px;margin:0 auto;padding:48px 40px 80px}'+
+    '.r-cover{text-align:center;padding:60px 0 48px;border-bottom:2px solid #E8E0F0;margin-bottom:48px}'+
+    '.r-cover-eye{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#9B7FE0;font-weight:600;margin-bottom:16px}'+
+    '.r-cover h1{font-family:"Libre Baskerville",serif;font-size:2.8rem;font-weight:700;color:#1A1528;line-height:1.15;margin-bottom:12px}'+
+    '.r-cover h1 em{font-style:italic;color:#9B7FE0}'+
+    '.r-cover-date{font-size:13px;color:#7A6E96;margin-top:8px}'+
+    '.r-cover-stats{display:flex;justify-content:center;gap:40px;margin-top:32px}'+
+    '.r-stat{text-align:center}'+
+    '.r-stat-n{font-family:"Libre Baskerville",serif;font-size:2rem;font-weight:700;color:#9B7FE0;line-height:1}'+
+    '.r-stat-l{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#7A6E96;margin-top:4px}'+
+    '.r-chapter{margin-bottom:48px}'+
+    '.r-chapter-title{font-family:"Libre Baskerville",serif;font-size:1.5rem;font-weight:700;color:#1A1528;margin-bottom:8px;padding-bottom:10px;border-bottom:1px solid #E0D8F0;display:flex;align-items:center;gap:10px}'+
+    '.r-monthly-block{background:#F5F0FC;border:1px solid #D8C8F0;border-radius:14px;padding:22px 26px;margin-bottom:16px}'+
+    '.r-monthly-lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#9B7FE0;font-weight:600;margin-bottom:10px}'+
+    '.r-monthly-text{font-family:"Libre Baskerville",serif;font-size:1.05rem;color:#1A1528;line-height:1.85;white-space:pre-line}'+
+    '.r-entry{background:#fff;border:1px solid #E8E0F0;border-radius:14px;padding:24px 28px;margin-bottom:20px;page-break-inside:avoid}'+
+    '.r-entry-date{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#9B7FE0;font-weight:600;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #F0EAF8}'+
+    '.r-section{margin-bottom:16px}'+
+    '.r-section-lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6B52A8;font-weight:600;margin-bottom:7px}'+
+    '.r-body{font-family:"Libre Baskerville",serif;font-size:1rem;color:#2A2040;line-height:1.85;white-space:pre-line}'+
+    '.r-grat-row{display:flex;gap:10px;margin-bottom:6px;font-family:"Libre Baskerville",serif;font-size:1rem;color:#2A2040;line-height:1.65}'+
+    '.r-grat-num{font-style:italic;color:#D4A843;min-width:20px;flex-shrink:0}'+
+    '.r-intent-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}'+
+    '.r-intent-cell{background:#F8F5FC;border-radius:10px;padding:12px 14px}'+
+    '.r-intent-lbl{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#9B7FE0;font-weight:600;margin-bottom:6px}'+
+    '.r-intent-cell p{font-family:"Libre Baskerville",serif;font-size:.95rem;color:#2A2040;line-height:1.65}'+
+    '.r-letter{background:#FFF5F8;border:1px solid #F0C8D8;border-radius:14px;padding:24px 28px;margin-bottom:20px;page-break-inside:avoid}'+
+    '.r-letter-date{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#C47890;font-weight:600;margin-bottom:10px}'+
+    '.r-letter-salutation{font-family:"Libre Baskerville",serif;font-size:1rem;font-style:italic;color:#888;margin-bottom:10px}'+
+    '.r-empty{color:#888;font-style:italic;padding:20px 0}'+
+    '.r-footer{text-align:center;padding-top:48px;border-top:1px solid #E8E0F0;font-size:12px;color:#9B90B0;margin-top:48px}'+
+    '@media print{body{background:#fff}.r-wrap{padding:20px}}'+
+    '@media(max-width:600px){.r-wrap{padding:24px 18px}.r-cover h1{font-size:2rem}.r-intent-grid{grid-template-columns:1fr}.r-cover-stats{gap:24px}}'+
+    '</style></head><body>'+
+    '<div class="r-wrap">'+
+      '<div class="r-cover">'+
+        '<div class="r-cover-eye">✦ Sacred Journal</div>'+
+        '<h1>Your <em>Journal</em> Report</h1>'+
+        '<div class="r-cover-date">Exported on '+today+'</div>'+
+        '<div class="r-cover-stats">'+
+          '<div class="r-stat"><div class="r-stat-n">'+entries.length+'</div><div class="r-stat-l">Daily Entries</div></div>'+
+          '<div class="r-stat"><div class="r-stat-n">'+letters.length+'</div><div class="r-stat-l">Letters Written</div></div>'+
+        '</div>'+
+      '</div>'+
+
+      (monthly.manifest||monthly.affirm?
+        '<div class="r-chapter">'+
+          '<div class="r-chapter-title">◎ Monthly Practice</div>'+
+          (monthly.manifest?'<div class="r-monthly-block"><div class="r-monthly-lbl">✦ Manifestations</div><div class="r-monthly-text">'+rEsc(monthly.manifest)+'</div></div>':'')+
+          (monthly.affirm  ?'<div class="r-monthly-block"><div class="r-monthly-lbl">𖠆 Affirmations</div><div class="r-monthly-text">'+rEsc(monthly.affirm)+'</div></div>':'')+
+        '</div>':'')+
+
+      '<div class="r-chapter">'+
+        '<div class="r-chapter-title">☀ Daily Entries</div>'+
+        entriesHTML+
+      '</div>'+
+
+      '<div class="r-chapter">'+
+        '<div class="r-chapter-title">✉ Letters to Her / Him</div>'+
+        lettersHTML+
+      '</div>'+
+
+      '<div class="r-footer">Sacred Journal &nbsp;·&nbsp; Exported '+today+'<br>Open in browser and use File → Print → Save as PDF to keep a copy.</div>'+
+    '</div>'+
+    '</body></html>';
+
+  var blob=new Blob([html],{type:'text/html'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='sacred-journal-report-'+toISO(NOW)+'.html';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Report downloaded ↓ Open in browser to read');
+}
+
+function rEsc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function val(id){var el=document.getElementById(id);return el?el.value:'';}
+function pad(n){return String(n).padStart(2,'0');}
+function toISO(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  setTimeout(function(){t.classList.remove('on');},2800);
+}
+</script>
+</body>
+</html>
